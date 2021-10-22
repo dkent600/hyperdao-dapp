@@ -48,17 +48,6 @@ export class App {
       this.handleScrollEvent();
     });
 
-    this.eventAggregator.subscribe("launches.loading", async (onOff: boolean) => {
-      this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
-      this.handleOnOff(onOff);
-    });
-
-    this.eventAggregator.subscribe("launch.creating", async (onOff: boolean) => {
-      this.modalMessage = "Thank you for your patience while we initiate the creation of a new launch...";
-      this.handleOnOff(onOff);
-    });
-
-
     this.eventAggregator.subscribe("transaction.sent", async () => {
       this.modalMessage = "Awaiting confirmation...";
       this.handleOnOff(true);
@@ -131,93 +120,23 @@ export class App {
      */
     config.map([
       {
-        moduleId: PLATFORM.moduleName("./home/home"),
+        moduleId: PLATFORM.moduleName("./channelAdmin/channelAdmin"),
         nav: true,
-        name: "home",
-        route: ["", "/", "home"],
-        title: "Home",
+        name: "channelAdmin",
+        route: ["", "/", "channelAdmin"],
+        title: "Channel Administration",
       },
-      {
-        moduleId: PLATFORM.moduleName("./launch/launch"),
-        nav: false,
-        name: "launch",
-        route: ["launch"],
-        title: "Host a Launch",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./launches/launches"),
-        nav: false,
-        name: "launches",
-        route: ["launches"],
-        title: "Launches",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./documentation/documentation"),
-        nav: false,
-        name: "documentation",
-        route: ["documentation"],
-        title: "Documentation",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
-        nav: false,
-        name: "seedDashboard",
-        route: ["seed/:address"],
-        title: "SEED Dashboard",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./lbpDashboard/lbpDashboard"),
-        nav: false,
-        name: "lbpDashboard",
-        route: ["lbp/:address"],
-        title: "LBP Dashboard",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./newLaunch/seed/launch"),
-        nav: false,
-        name: "newSeed",
-        route: ["newSeed"],
-        title: "Register New SEED",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./newLaunch/lbp/launch"),
-        nav: false,
-        name: "newLBP",
-        route: ["newLBP"],
-        title: "Register New LBP",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
-        nav: false,
-        name: "selectPackageSeed",
-        route: ["newSeed/selectPackage"],
-        title: "Select Your Package",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
-        nav: false,
-        name: "selectPackageLBP",
-        route: ["newLBP/selectPackage"],
-        title: "Select Your Package",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./admin/seeds/dashboard/dashboard"),
-        nav: false,
-        name: "seedAdminDashboard",
-        route: ["admin/seeds/dashboard/:address?"],
-        title: "Administer a Seed Launch",
-      },
-      {
-        moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
-        nav: false,
-        name: "lbpAdminDashboard",
-        route: ["admin/lbps/dashboard/:address?"],
-        title: "Administer an LBP Launch",
-      },
+      // {
+      //   moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
+      //   nav: false,
+      //   name: "lbpAdminDashboard",
+      //   route: ["admin/lbps/dashboard/:address?"],
+      //   title: "Administer an LBP Launch",
+      // },
 
     ]);
 
-    config.fallbackRoute("home");
+    config.fallbackRoute("channelAdmin");
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;

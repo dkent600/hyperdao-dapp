@@ -6,7 +6,6 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/banner/banner"),
     PLATFORM.moduleName("./elements/EtherscanLink/EtherscanLink"),
     PLATFORM.moduleName("./elements/EthBalance/EthBalance"),
-    PLATFORM.moduleName("./elements/TokenBalance/TokenBalance"),
     PLATFORM.moduleName("./elements/UsersAddress/UsersAddress"),
     PLATFORM.moduleName("./elements/copyToClipboardButton/copyToClipboardButton"),
     PLATFORM.moduleName("./elements/numericInput/numericInput"),
@@ -17,15 +16,9 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/loading-dots/loading-dots"),
     PLATFORM.moduleName("./elements/inline-svg"),
     PLATFORM.moduleName("./elements/horizontal-scroller/horizontal-scroller"),
-    PLATFORM.moduleName("./elements/timeLeft/timeLeft"),
-    PLATFORM.moduleName("./elements/featuredLaunches/featuredLaunches"),
-    PLATFORM.moduleName("../launchAbout/launchAbout"),
     PLATFORM.moduleName("./elements/circledNumber/circledNumber"),
     PLATFORM.moduleName("./elements/questionMark/questionMark"),
     PLATFORM.moduleName("./elements/rangeInput/rangeInput"),
-    PLATFORM.moduleName("./elements/tokenPair/tokenPair"),
-    PLATFORM.moduleName("./elements/markdown/markdown"),
-    PLATFORM.moduleName("./elements/tokenSelect/tokenSelect"),
     PLATFORM.moduleName("./elements/dropdown/dropdown"),
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
@@ -36,8 +29,5 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./value-converters/smallHexString"),
     PLATFORM.moduleName("./value-converters/sort"),
     PLATFORM.moduleName("./attributes/mutationObserver"),
-
-    PLATFORM.moduleName("./dialogs/disclaimer/disclaimer"),
-    // PLATFORM.moduleName("./bindingBehaviors/asyncBinding"),
   ]);
 }

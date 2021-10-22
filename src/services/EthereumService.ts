@@ -6,11 +6,9 @@ import { BigNumber, BigNumberish, ethers, Signer } from "ethers";
 import { BaseProvider, ExternalProvider, Web3Provider, Network } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import Torus from "@toruslabs/torus-embed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
-import { DisclaimerService } from "services/DisclaimerService";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -66,7 +64,6 @@ export interface IChainEventInfo {
 export class EthereumService {
   constructor(
     private eventAggregator: EventAggregator,
-    private disclaimerService: DisclaimerService,
     private consoleLogService: ConsoleLogService,
     // private storageService: BrowserStorageService,
   ) { }
@@ -78,20 +75,6 @@ export class EthereumService {
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
   }
   private static providerOptions = {
-    torus: {
-      package: Torus, // required
-      options: {
-        network: "",
-        // networkParams: {
-        //   host: "https://localhost:8545", // optional
-        //   chainId: 1337, // optional
-        //   networkId: 1337, // optional
-        // },
-        // config: {
-        //   buildEnv: "development", // optional
-        // },
-      },
-    },
     // TODO: test with walletconnect
     walletconnect: {
       package: WalletConnectProvider, // required
@@ -129,8 +112,6 @@ export class EthereumService {
 
     this.targetedNetwork = network;
     this.targetedChainId = this.chainIdByName.get(network);
-
-    EthereumService.providerOptions.torus.options.network = network;
 
     const readonlyEndPoint = EthereumService.ProviderEndpoints[this.targetedNetwork];
     if (!readonlyEndPoint) {
@@ -182,10 +163,6 @@ export class EthereumService {
   }
 
   private async fireAccountsChangedHandler(account: Address) {
-    if (account && !(await this.disclaimerService.ensurePrimeDisclaimed(account))) {
-      this.disconnect({ code: -1, message: "User declined the PrimeLAUNCH disclaimer" });
-      account = null;
-    }
     console.info(`account changed: ${account}`);
     this.eventAggregator.publish("Network.Changed.Account", account);
   }
@@ -266,11 +243,7 @@ export class EthereumService {
       if (chainId === this.targetedNetwork) {
         const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts?.length) {
-          const account = getAddress(accounts[0]);
-          if (this.disclaimerService.getPrimeDisclaimed(account)) {
-            this.consoleLogService.logMessage(`autoconnecting to ${account}`, "info");
-            this.setProvider(provider);
-          }
+          this.setProvider(provider);
         }
       }
     }

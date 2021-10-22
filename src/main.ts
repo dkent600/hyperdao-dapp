@@ -1,4 +1,3 @@
-import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
@@ -7,14 +6,9 @@ import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { SeedService } from "services/SeedService";
-import { IpfsService } from "services/IpfsService";
-import { GeoBlockService } from "services/GeoBlockService";
 import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
-import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
-import { LbpManagerService } from "services/LbpManagerService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -49,24 +43,6 @@ export function configure(aurelia: Aurelia): void {
       ContractsDeploymentProvider.initialize(ethereumService.targetedNetwork);
 
       aurelia.container.get(ContractsService);
-
-      const tokenService = aurelia.container.get(TokenService);
-
-      await tokenService.initialize();
-
-      const seedService = aurelia.container.get(SeedService);
-
-      seedService.initialize();
-
-      const lbpService = aurelia.container.get(LbpManagerService);
-
-      lbpService.initialize();
-
-      const ipfsService = aurelia.container.get(IpfsService);
-      ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
-
-      const geoBlockService = aurelia.container.get(GeoBlockService);
-      geoBlockService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

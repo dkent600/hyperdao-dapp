@@ -33,7 +33,7 @@ export class ModalScreen {
   private onResize() {
     if (this.container) {
       const headerHeight = document.querySelector(".navbar-container")?.scrollHeight ?? 0;
-      const footerHeight = document.querySelector(".footerContainer")?.scrollHeight ?? 0;
+      const footerHeight = 0; // document.querySelector(".footerContainer")?.scrollHeight ?? 0;
       this.mask.style.height = `${this.container.scrollHeight - headerHeight - footerHeight}px`;
       this.mask.style.top = `${this.container.offsetTop + headerHeight}px`;
       this.mask.style.bottom = `${footerHeight}px`;
