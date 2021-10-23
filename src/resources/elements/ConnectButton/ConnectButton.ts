@@ -1,6 +1,5 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, containerless, customElement, singleton } from "aurelia-framework";
-import { ContractNames, ContractsService } from "services/ContractsService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { Address, EthereumService } from "services/EthereumService";
 import { EventConfigTransaction } from "services/GeneralEvents";
@@ -59,10 +58,6 @@ export class ConnectButton {
     }));
 
     this.accountAddress = this.ethereumService.defaultAccountAddress || null;
-    this.primeAddress = ContractsService.getContractAddress(ContractNames.PRIMETOKEN);
-    // this.bPrimeAddress = this.contractsService.getContractAddress(ContractNames.ConfigurableRightsPool);
-    // this.wethAddress = this.contractsService.getContractAddress(ContractNames.WETH);
-    // this.daiAddress = ContractsService.getContractAddress(ContractNames.DAI);
   }
 
   public dispose(): void {

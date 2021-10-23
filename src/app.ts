@@ -107,7 +107,7 @@ export class App {
 
   private configureRouter(config: RouterConfiguration, router: Router) {
 
-    config.title = "PrimeLaunch";
+    config.title = "HyperDAO";
     config.options.pushState = true;
     // const isIpfs = (window as any).IS_IPFS;
     // if (isIpfs) {
@@ -120,11 +120,18 @@ export class App {
      */
     config.map([
       {
-        moduleId: PLATFORM.moduleName("./channelAdmin/channelAdmin"),
+        moduleId: PLATFORM.moduleName("./noPage.html"),
         nav: true,
-        name: "channelAdmin",
-        route: ["", "/", "channelAdmin"],
-        title: "Channel Administration",
+        name: "noPage",
+        route: ["", "/"],
+        title: "Not found",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./createDao/createDao"),
+        nav: true,
+        name: "createDAO",
+        route: ["/createDAO"],
+        title: "Create DAO",
       },
       // {
       //   moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
@@ -136,7 +143,7 @@ export class App {
 
     ]);
 
-    config.fallbackRoute("channelAdmin");
+    config.fallbackRoute("/");
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;

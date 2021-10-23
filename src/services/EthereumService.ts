@@ -243,6 +243,8 @@ export class EthereumService {
       if (chainId === this.targetedNetwork) {
         const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts?.length) {
+          const account = getAddress(accounts[0]);
+          this.consoleLogService.logMessage(`autoconnecting to ${account}`, "info");
           this.setProvider(provider);
         }
       }

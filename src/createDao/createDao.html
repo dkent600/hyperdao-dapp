@@ -1,0 +1,45 @@
+<template>
+  <div class="page animated-page au-animate createDao">
+    <div class="heading heading1">Create a DAO for a Telegram Channel</div>
+
+    <div class="form">
+      <div class="body">
+        <!-- <label for="name">Name of the Channel</label>
+        <input id="name" class="name" value.bind="channnelName" />
+
+        <label for="telegramHandle">Your Telegram Handle (like "@me")</label>
+        <input id="telegramHandle" class="telegramHandle" value.bind="telegramHandle" /> -->
+
+        <label for="safeOwners">Initial DAO Members (Voters)</label>
+        <div class="safeOwners">
+          <div class="owner" repeat.for="owner of initialOwners">
+            <!-- <div class="formGroup">
+              <label for="${`handle${$index}`}">Telegram Handle</label>
+              <input id="${`handle${$index}`}" class="handle" />
+            </div> -->
+
+            <div class="formGroup">
+              <label for="walletAddress">Wallet Address</label>
+              <input id="walletAddress" class="address" />
+            </div>
+
+            <div class="formGroup">
+              <div
+                class="deleteOwner"
+                title="Delete this member"
+                click.delegate="deleteOwner($index)">
+                <i class="far fa-trash-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="addOwner"
+          click.delegate="addOwner()"
+          <a>+ Add Member</a>
+        </div>
+      </div>
+      <button class="button1" click.delegate="createChannel()" disabled.bind="!isValid">Create Channel</button>
+    </div>
+  </div>
+</template>
