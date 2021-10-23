@@ -1,6 +1,6 @@
 <template>
   <div class="page animated-page au-animate createDao">
-    <div class="heading heading1">Create a DAO for a Telegram Channel</div>
+    <div class="heading heading1">Create a DAO for ${chatTitle}</div>
 
     <div class="form">
       <div class="body">
@@ -9,7 +9,7 @@
         <div if.bind="initialOwners.length" class="safeOwners">
           <template repeat.for="owner of initialOwners">
             <div class="memberAddress">
-              <etherscanlink address.to-view="owner" text.bind="owner | smallHexString"></etherscanlink>
+              <etherscanlink address.to-view="owner" text.bind="owner"></etherscanlink>
             </div>
             <div class="deleteOwner" title="Delete this member" click.delegate="deleteOwner($index)">
               <i class="far fa-trash-alt"></i>

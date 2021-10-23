@@ -24,7 +24,7 @@
       "type": "pwa-msedge",
       "request": "launch",
       "name": "Launch Edge against localhost",
-      "url": "http://localhost:3333/createdao?chatid=2",
+      "url": "http://localhost:3333/createdao?chatId=2&chatTitle=Fabi%27s%20Test%20Channel",
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,

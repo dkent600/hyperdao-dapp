@@ -7,12 +7,6 @@ import { ContractNames, ContractsService } from "./ContractsService";
 import { autoinject } from "aurelia-framework";
 import { api } from "./GnosisService";
 
-export interface IDaoConfig {
-  chatId: string;
-  owners: Array<Address>;
-  threshold: number;
-}
-
 @autoinject
 export class TelegramDaoService {
 
@@ -24,9 +18,9 @@ export class TelegramDaoService {
   ) {
   }
 
-  public async deployDao(config: IDaoConfig): Promise<TransactionReceipt> {
+  public async deployDao(chatId: string, owners: Array<Address>, threshold: number): Promise<TransactionReceipt> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    return this.transactionsService.send(() => signer.assembleDao(config.chatId, config.owners, config.threshold));
+    return this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
   }
 
   public async createTransferProposal(chatId: string, to: Address, amount: string): Promise<Hash> {
