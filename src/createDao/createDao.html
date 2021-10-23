@@ -4,14 +4,9 @@
 
     <div class="form">
       <div class="body">
-        <!-- <label for="name">Name of the Channel</label>
-        <input id="name" class="name" value.bind="channnelName" />
-
-        <label for="telegramHandle">Your Telegram Handle (like "@me")</label>
-        <input id="telegramHandle" class="telegramHandle" value.bind="telegramHandle" /> -->
-
-        <label class="safeOwnersLabel" for="safeOwners">Specify at least one initial DAO Member (Voters)</label>
-        <div class="safeOwners">
+        <label class="safeOwnersLabel" for="safeOwners">Specify any initial DAO Members (voters)</label>
+        <div class="comment safeOwnersComment">You will be automatically added when the DAO is created.</div>
+        <div if.bind="initialOwners.length" class="safeOwners">
           <template repeat.for="owner of initialOwners">
             <div class="memberAddress">
               <etherscanlink address.to-view="owner" text.bind="owner | smallHexString"></etherscanlink>
@@ -22,11 +17,17 @@
           </template>
         </div>
         <div class="newMemberInput">
-          <input class="addressInput" value.bind="newOwner" placeholder="Enter an ethereum address" />
+          <input class="addressInput" value.bind="newOwner" placeholder="An ethereum address" />
           <div class="addOwner" click.delegate="addOwner()"><a>+ Add</a></div>
         </div>
       </div>
-      <button class="button1" click.delegate="createDAO()" disabled.bind="!isValid">Create DAO</button>
+      <div class="thresholdInputs">
+        <label class="thresholdLabel">Threshold of winning votes</label>
+        <div class="comment thresholdComment">Number of For votes that result in a win.</div>
+        <input class="thresholdInput" value.bind="threshold | number" placeholder="A number" />
+      </div>
+      <button class="button1" show.bind="ethereumService.defaultAccountAddress" click.delegate="createDAO()" disabled.bind="!isValid">Create DAO</button>
+      <button class="button1" show.bind="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to your wallet</button>
     </div>
   </div>
 </template>

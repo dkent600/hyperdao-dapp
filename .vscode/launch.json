@@ -24,7 +24,7 @@
       "type": "pwa-msedge",
       "request": "launch",
       "name": "Launch Edge against localhost",
-      "url": "http://localhost:3333",
+      "url": "http://localhost:3333/createdao?chatid=2",
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
