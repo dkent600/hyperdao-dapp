@@ -121,26 +121,16 @@ export class App {
     config.map([
       {
         moduleId: PLATFORM.moduleName("./noPage.html"),
-        nav: true,
         name: "noPage",
         route: ["", "/"],
         title: "Not found",
       },
       {
         moduleId: PLATFORM.moduleName("./createDao/createDao"),
-        nav: true,
-        name: "createDAO",
-        route: ["/createDAO"],
+        name: "createDao",
+        route: ["createdao"],
         title: "Create DAO",
       },
-      // {
-      //   moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
-      //   nav: false,
-      //   name: "lbpAdminDashboard",
-      //   route: ["admin/lbps/dashboard/:address?"],
-      //   title: "Administer an LBP Launch",
-      // },
-
     ]);
 
     config.fallbackRoute("/");

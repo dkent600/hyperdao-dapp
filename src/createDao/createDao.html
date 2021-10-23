@@ -10,36 +10,23 @@
         <label for="telegramHandle">Your Telegram Handle (like "@me")</label>
         <input id="telegramHandle" class="telegramHandle" value.bind="telegramHandle" /> -->
 
-        <label for="safeOwners">Initial DAO Members (Voters)</label>
+        <label class="safeOwnersLabel" for="safeOwners">Specify at least one initial DAO Member (Voters)</label>
         <div class="safeOwners">
-          <div class="owner" repeat.for="owner of initialOwners">
-            <!-- <div class="formGroup">
-              <label for="${`handle${$index}`}">Telegram Handle</label>
-              <input id="${`handle${$index}`}" class="handle" />
-            </div> -->
-
-            <div class="formGroup">
-              <label for="walletAddress">Wallet Address</label>
-              <input id="walletAddress" class="address" />
+          <template repeat.for="owner of initialOwners">
+            <div class="memberAddress">
+              <etherscanlink address.to-view="owner" text.bind="owner | smallHexString"></etherscanlink>
             </div>
-
-            <div class="formGroup">
-              <div
-                class="deleteOwner"
-                title="Delete this member"
-                click.delegate="deleteOwner($index)">
-                <i class="far fa-trash-alt"></i>
-              </div>
+            <div class="deleteOwner" title="Delete this member" click.delegate="deleteOwner($index)">
+              <i class="far fa-trash-alt"></i>
             </div>
-          </div>
+          </template>
         </div>
-        <div
-          class="addOwner"
-          click.delegate="addOwner()"
-          <a>+ Add Member</a>
+        <div class="newMemberInput">
+          <input class="addressInput" value.bind="newOwner" placeholder="Enter an ethereum address" />
+          <div class="addOwner" click.delegate="addOwner()"><a>+ Add</a></div>
         </div>
       </div>
-      <button class="button1" click.delegate="createChannel()" disabled.bind="!isValid">Create Channel</button>
+      <button class="button1" click.delegate="createDAO()" disabled.bind="!isValid">Create DAO</button>
     </div>
   </div>
 </template>

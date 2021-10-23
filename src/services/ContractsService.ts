@@ -5,7 +5,6 @@ import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 
 export enum ContractNames {
-  HYPERDAO = "HyperDAO",
   SAFE = "Safe",
   SIGNER = "SignerV2"
 }
@@ -21,7 +20,6 @@ export interface IStandardEvent<TArgs> {
 export class ContractsService {
 
   private static Contracts = new Map<ContractNames, Contract>([
-    // [ContractNames.HYPERDAO, null],
     [ContractNames.SAFE, null],
     [ContractNames.SIGNER, null],
   ]);

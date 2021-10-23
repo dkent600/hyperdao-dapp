@@ -25,8 +25,8 @@ export class TelegramDaoService {
   }
 
   public async deployDao(config: IDaoConfig): Promise<TransactionReceipt> {
-    const hyperDaoFactory = await this.contractsService.getContractFor(ContractNames.HYPERDAO);
-    return this.transactionsService.send(() => hyperDaoFactory.assembleDao(config.chatId, config.owners, config.threshold));
+    const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    return this.transactionsService.send(() => signer.assembleDao(config.chatId, config.owners, config.threshold));
   }
 
   public async createTransferProposal(chatId: string, to: Address, amount: string): Promise<Hash> {
