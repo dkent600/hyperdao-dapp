@@ -131,6 +131,12 @@ export class App {
         route: ["createdao"],
         title: "Create DAO",
       },
+      {
+        moduleId: PLATFORM.moduleName("./transfer/transfer"),
+        name: "transfer",
+        route: ["transfer"],
+        title: "Transfer Funds",
+      },
     ]);
 
     config.fallbackRoute("/");
