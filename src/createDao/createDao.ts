@@ -48,7 +48,7 @@ export class createDao {
     this.ethereumService.ensureConnected();
   }
 
-  async createDAO(): void {
+  async createDAO(): Promise<void> {
     if (this.isValid && this.ethereumService.defaultAccountAddress) {
       const owners = [...this.initialOwners];
       if (owners.indexOf(this.ethereumService.defaultAccountAddress) === -1) {
