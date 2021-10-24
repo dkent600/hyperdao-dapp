@@ -7,6 +7,7 @@ import { ContractNames, ContractsService } from "./ContractsService";
 import { autoinject } from "aurelia-framework";
 import { api } from "./GnosisService";
 import { BigNumber } from "ethers";
+import { getAddress } from "ethers/lib/utils";
 
 @autoinject
 export class TelegramDaoService {
@@ -26,7 +27,7 @@ export class TelegramDaoService {
 
   public async createTransferProposal(chatId: number, to: Address, amount: string | BigNumber): Promise<Hash> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const safeAddress = await signer.chatToHyperDao(chatId);
+    const safeAddress = getAddress(await signer.chatToHyperDao(chatId));
     // const safe = await this.contractsService.getContractAtAddress(ContractNames.SAFE, safeAddress);
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
@@ -48,7 +49,7 @@ export class TelegramDaoService {
       baseGas: 0,
       gasPrice: 0,
       safe: safeAddress,
-      data: [],
+      data: "0x",
     });
 
     const { hash, signature } = await signer.callStatic.generateSignature(
@@ -88,9 +89,12 @@ export class TelegramDaoService {
     }
 
     // eslint-disable-next-line require-atomic-updates
-    transaction.sender = signer.address;
+    transaction.sender = getAddress(signer.address);
 
     this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
+
+    // console.log("sending transaction to Safe:");
+    // console.dir(transaction);
 
     const response = await gnosis.sendTransaction(transaction);
 
