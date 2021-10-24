@@ -26,8 +26,9 @@
         <div class="comment thresholdComment">Number of For votes that result in a win.</div>
         <input class="thresholdInput" value.bind="threshold | number" placeholder="A number" />
       </div>
-      <button class="button1" show.bind="ethereumService.defaultAccountAddress" click.delegate="createDAO()" disabled.bind="!isValid">Create DAO</button>
-      <button class="button1" show.bind="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to your wallet</button>
+      <button class="button1" show.bind="!hyperDao && ethereumService.defaultAccountAddress" click.delegate="createDAO()" disabled.bind="!isValid">Create DAO</button>
+      <button class="button1" show.bind="!hyperDao && !ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to your wallet</button>
+      <button class="button1" show.bind="hyperDao && ethereumService.defaultAccountAddress" click.delegate="addDelegate()">Complete the DAO</button>
     </div>
   </div>
 </template>

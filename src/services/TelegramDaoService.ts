@@ -1,4 +1,3 @@
-import { TransactionReceipt } from "@ethersproject/providers";
 import { EthereumService, NULL_HASH } from "./EthereumService";
 import TransactionsService from "./TransactionsService";
 import { Hash, Address } from "./EthereumService";
@@ -23,13 +22,7 @@ export class TelegramDaoService {
   public async deployDao(chatId: number, owners: Array<Address>, threshold: number): Promise<Address> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const receipt = await this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
-    if (receipt) {
-      const safeAddress = getAddress(await signer.chatToHyperDao(chatId));
-      if (await this.addSafeDelegate(safeAddress, signer.address)) {
-        return safeAddress;
-      }
-    }
-    return null;
+    return receipt ? getAddress(await signer.chatToHyperDao(chatId)) : null;
   }
 
   public async createTransferProposal(chatId: number, to: Address, amount: string | BigNumber): Promise<Hash> {
@@ -127,7 +120,10 @@ export class TelegramDaoService {
     gnosis.addConfirmation({ signature }, txHash);
   }
 
-  private async addSafeDelegate(safeAddress: Address, delegateAddress: Address): Promise<boolean> {
+  public async addSafeDelegate(chatId: number): Promise<boolean> {
+    const signerContract = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    const safeAddress = getAddress(await signerContract.chatToHyperDao(chatId));
+    const delegateAddress = signerContract.address;
     const signer = this.ethereumService.getDefaultSigner();
     if (!signer) {
       throw new Error("addSafeDelegate: need a signer");

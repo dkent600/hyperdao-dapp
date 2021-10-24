@@ -15,6 +15,7 @@ export class createDao {
   threshold: number;
   chatId: number;
   chatTitle: string;
+  hyperDao: Address;
 
   constructor(
     private ethereumService: EthereumService,
@@ -59,13 +60,19 @@ export class createDao {
       } else if (owners.length < 2) {
         this.eventAggregator.publish("handleValidationError", "You must add at least one initial member");
       } else {
-        const hyperDao = await this.telegramDaoService.deployDao(this.chatId, owners, this.threshold);
-        if (hyperDao) {
-          this.alertService.showAlert(`Congratulations on creating your new DAO for ${this.chatTitle}! If you want to fund it you can send funds to ${hyperDao}.`);
-        } else {
+        this.hyperDao = await this.telegramDaoService.deployDao(this.chatId, owners, this.threshold);
+        if (!this.hyperDao) {
           this.eventAggregator.publish("handleValidationError", "Sorry, an error occured deploying your DAO");
         }
       }
     }
+  }
+
+  async addDelegate(): Promise<void> {
+    if (await this.telegramDaoService.addSafeDelegate(this.chatId)) {
+      this.alertService.showAlert(`Congratulations on creating your new DAO for ${this.chatTitle}! If you want to fund it you can send funds to ${this.hyperDao}.`);
+      return;
+    }
+
   }
 }
