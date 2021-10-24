@@ -20,9 +20,14 @@ export class TelegramDaoService {
   ) {
   }
 
-  public async deployDao(chatId: number, owners: Array<Address>, threshold: number): Promise<TransactionReceipt> {
+  public async deployDao(chatId: number, owners: Array<Address>, threshold: number): Promise<Address> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    return this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
+    const receipt = await this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
+    if (receipt) {
+      return await signer.chatToHyperDao(chatId);
+    } else {
+      return null;
+    }
   }
 
   public async createTransferProposal(chatId: number, to: Address, amount: string | BigNumber): Promise<Hash> {
