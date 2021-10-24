@@ -51,7 +51,7 @@ export class TelegramDaoService {
       gasToken: "0x0000000000000000000000000000000000000000",
       refundReceiver: "0x0000000000000000000000000000000000000000",
       safe: safeAddress,
-      data: "0x0000000000000000000000000000000000000000000000000000000000000140",
+      data: "0x",
     });
 
     const { hash, signature } = await signer.callStatic.generateSignature(
