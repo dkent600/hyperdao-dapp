@@ -54,16 +54,17 @@ export class createDao {
       if (owners.indexOf(this.ethereumService.defaultAccountAddress) === -1) {
         owners.push(this.ethereumService.defaultAccountAddress);
       }
-      if (this.threshold <= owners.length) {
+      if (this.threshold > owners.length) {
+        this.eventAggregator.publish("handleValidationError", "Threshold cannot be greater than the number of DAO members, which includes you");
+      } else if (owners.length < 2) {
+        this.eventAggregator.publish("handleValidationError", "You must add at least one initial member");
+      } else {
         const hyperDao = await this.telegramDaoService.deployDao(this.chatId, owners, this.threshold);
         if (hyperDao) {
           this.alertService.showAlert(`Congratulations on creating your new DAO for ${this.chatTitle}! If you want to fund it you can send funds to ${hyperDao}.`);
         } else {
           this.eventAggregator.publish("handleValidationError", "Sorry, an error occured deploying your DAO");
         }
-
-      } else {
-        this.eventAggregator.publish("handleValidationError", "Threshold cannot be greater than the number of DAO members, which includes you");
       }
     }
   }
