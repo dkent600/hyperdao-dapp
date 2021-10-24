@@ -6,6 +6,7 @@ import { ConsoleLogService } from "./ConsoleLogService";
 import { ContractNames, ContractsService } from "./ContractsService";
 import { autoinject } from "aurelia-framework";
 import { api } from "./GnosisService";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class TelegramDaoService {
@@ -18,21 +19,22 @@ export class TelegramDaoService {
   ) {
   }
 
-  public async deployDao(chatId: string, owners: Array<Address>, threshold: number): Promise<TransactionReceipt> {
+  public async deployDao(chatId: number, owners: Array<Address>, threshold: number): Promise<TransactionReceipt> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     return this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
   }
 
-  public async createTransferProposal(chatId: string, to: Address, amount: string): Promise<Hash> {
+  public async createTransferProposal(chatId: number, to: Address, amount: string | BigNumber): Promise<Hash> {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const safeAddress = signer.chatToHyperDao(chatId);
+    const safeAddress = await signer.chatToHyperDao(chatId);
     // const safe = await this.contractsService.getContractAtAddress(ContractNames.SAFE, safeAddress);
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
     const transaction = {
       to,
       from: safeAddress,
-      value: amount,
+      value: amount.toString(),
+      operation: 0,
     } as any;
 
     // console.log("estimating transaction:");
@@ -45,12 +47,12 @@ export class TelegramDaoService {
       nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
-      gasToken: "0x0000000000000000000000000000000000000000",
-      refundReceiver: "0x0000000000000000000000000000000000000000",
       safe: safeAddress,
+      data: [],
     });
 
     const { hash, signature } = await signer.callStatic.generateSignature(
+      chatId,
       transaction.to,
       transaction.value,
       transaction.data,
@@ -58,8 +60,6 @@ export class TelegramDaoService {
       transaction.safeTxGas,
       transaction.baseGas,
       transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
       transaction.nonce,
     );
 
@@ -72,6 +72,7 @@ export class TelegramDaoService {
     // console.dir(transaction);
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
+      chatId,
       transaction.to,
       transaction.value,
       transaction.data,
@@ -79,8 +80,6 @@ export class TelegramDaoService {
       transaction.safeTxGas,
       transaction.baseGas,
       transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
       transaction.nonce,
     ));
 

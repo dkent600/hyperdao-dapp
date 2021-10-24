@@ -11,7 +11,7 @@ export class createDao {
   initialOwners: Array<Address> = new Array<string>();
   newOwner: Address;
   threshold: number;
-  chatId: string;
+  chatId: number;
   chatTitle: string;
 
   constructor(
@@ -21,7 +21,7 @@ export class createDao {
   ) {}
 
   activate(params: { chatId: string, chatTitle: string}, _routeConfig: RouteConfig): void {
-    this.chatId = params.chatId;
+    this.chatId = Number(params.chatId);
     this.chatTitle = params.chatTitle;
   }
 
