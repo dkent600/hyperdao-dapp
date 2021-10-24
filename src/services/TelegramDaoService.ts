@@ -90,6 +90,7 @@ export class TelegramDaoService {
     ));
 
     if (!result) {
+      this.consoleLogService.logMessage("An error occurred signing the transaction");
       return null;
     }
 
@@ -104,7 +105,13 @@ export class TelegramDaoService {
     const response = await gnosis.sendTransaction(transaction);
 
     if (response.status !== 201) {
-      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+      this.consoleLogService.logMessage(`An error occurred submitting the transaction: ${response.statusText}`);
+      return null;
     }
+
+    return hash;
+  }
+
+  public async vote(chatId: number, proposalId: Hash): Promise<void> {
   }
 }
