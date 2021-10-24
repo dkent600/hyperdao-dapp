@@ -1,5 +1,5 @@
 import { TransactionReceipt } from "@ethersproject/providers";
-import { EthereumService } from "./EthereumService";
+import { EthereumService, NULL_HASH } from "./EthereumService";
 import TransactionsService from "./TransactionsService";
 import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
@@ -55,8 +55,10 @@ export class TelegramDaoService {
       nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
       safe: safeAddress,
-      data: "0x",
+      data: "0x0000000000000000000000000000000000000000000000000000000000000140",
     });
 
     const { hash, signature } = await signer.callStatic.generateSignature(
@@ -114,7 +116,15 @@ export class TelegramDaoService {
     return hash;
   }
 
-  public async vote(chatId: number, proposalId: Hash): Promise<void> {
+  public async vote(chatId: number, txHash: Hash): Promise<void> {
+    const signer = this.ethereumService.getDefaultSigner();
+    const signature = signer.signMessage(txHash);
+    const signerContract = await this.contractsService.getContractFor(ContractNames.SIGNER);
+
+    const safeAddress = getAddress(await signerContract.chatToHyperDao(chatId));
+    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+
+    gnosis.addConfirmation({ signature }, txHash);
   }
 
   private async addSafeDelegate(safeAddress: Address, delegateAddress: Address): Promise<boolean> {
