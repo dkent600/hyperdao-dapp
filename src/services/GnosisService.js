@@ -98,7 +98,7 @@ const api = (safe, network) => {
     getCurrentNonce: async () => await getCurrentNonce(safe, url),
     getDelegates: async () => await getDelegates(safe, url),
     addConfirmation: async (payload, safeTxHash) =>
-      await addConfirmation(payload, safe, safeTxHash),
+      await addConfirmation(payload, safeTxHash, safe),
   };
 };
 

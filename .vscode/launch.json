@@ -26,6 +26,7 @@
       "name": "Launch Edge against localhost",
       "url": "http://localhost:3333/createdao?chatId=-1001741603151&chatTitle=Fabi%27s%20Test%20Channel",
       // "url": "http://localhost:3333/transfer?chatId=-1001741603151&to=0xD4717ee259f8736af189F968Dadc6939c1568200&amount=10000000000000",
+      // "url": "http://localhost:3333/vote?chatId=-1001741603151&proposalId=0x4f7741cfed91aac0a13704435d97f909fbe0fd1ecdae5afd0859b504df9fee65",
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
