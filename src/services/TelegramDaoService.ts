@@ -24,10 +24,12 @@ export class TelegramDaoService {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const receipt = await this.transactionsService.send(() => signer.assembleDao(chatId, owners, threshold));
     if (receipt) {
-      return await signer.chatToHyperDao(chatId);
-    } else {
-      return null;
+      const safeAddress = getAddress(await signer.chatToHyperDao(chatId));
+      if (await this.addSafeDelegate(safeAddress, signer.address)) {
+        return safeAddress;
+      }
     }
+    return null;
   }
 
   public async createTransferProposal(chatId: number, to: Address, amount: string | BigNumber): Promise<Hash> {
@@ -113,5 +115,32 @@ export class TelegramDaoService {
   }
 
   public async vote(chatId: number, proposalId: Hash): Promise<void> {
+  }
+
+  private async addSafeDelegate(safeAddress: Address, delegateAddress: Address): Promise<boolean> {
+    const signer = this.ethereumService.getDefaultSigner();
+    if (!signer) {
+      throw new Error("addSafeDelegate: need a signer");
+    }
+    // console.log(
+    //   `adding delegate ${delegateAddress} to Gnosis Safe ${safeAddress}`
+    // );
+    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+    const label = "Signer";
+    const totp = Math.floor(Math.floor(Date.now() / 1000) / 3600);
+    const signature = await signer.signMessage(delegateAddress + totp.toString());
+    const payload = {
+      safe: safeAddress,
+      delegate: delegateAddress,
+      label,
+      signature,
+    };
+    const result = await gnosis.addDelegate(payload);
+    if (result.status === 201) {
+      // console.log("Successfully added");
+      return true;
+    }
+    // console.log(result);
+    return false;
   }
 }

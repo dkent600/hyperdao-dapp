@@ -4,7 +4,7 @@
 
     <div class="form">
       <div class="body">
-        <label class="safeOwnersLabel" for="safeOwners">Specify any initial DAO Members (voters)</label>
+        <label class="safeOwnersLabel" for="safeOwners">Specify at least one initial DAO Member (voter)</label>
         <div class="comment safeOwnersComment">You will be automatically added when the DAO is created.</div>
         <div if.bind="initialOwners.length" class="safeOwners">
           <template repeat.for="owner of initialOwners">
