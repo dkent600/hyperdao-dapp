@@ -99,20 +99,3 @@
     }
   }
 }
-
-@media screen and (max-width: 1368px) {
-  .connectButtonContainer {
-    &.connected {
-      padding-left: 0;
-      .connectedButtons {
-        .connectButton {
-          margin-left: 0;
-        }
-        .ethBalanceContainer,
-        .separator {
-          display: none;
-        }
-      }
-    }
-  }
-}
