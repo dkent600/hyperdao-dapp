@@ -112,6 +112,8 @@ export class TelegramDaoService {
   public async vote(chatId: number, txHash: Hash): Promise<void> {
     const signer = this.ethereumService.getDefaultSigner();
     const signature = await signer.signMessage(txHash);
+    // fix that didn't work for weird sig unpacking issue
+    // signature = signature.slice(0, -2) + Number(31).toString(16);
     const signerContract = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const safeAddress = getAddress(await signerContract.chatToHyperDao(chatId));
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
